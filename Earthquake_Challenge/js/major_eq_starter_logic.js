@@ -30,12 +30,15 @@ let baseMaps = {
 
 // 1. Add a 3rd layer group for the major earthquake data.
 let allEarthquakes = new L.LayerGroup();
+let tectonicplates = new L.LayerGroup();
+let majorEarthquake = new L.LayerGroup();
 
 
 // 2. Add a reference to the major earthquake group to the overlays object.
 let overlays = {
   "Earthquakes": allEarthquakes,
-
+  "Tectonic PLates": tectonicplates,
+  "Major Earthquakes": majorEarthquake
 };
 
 // Then we add a control to the map that will allow the user to change which
