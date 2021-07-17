@@ -136,24 +136,15 @@ function styleInfo(feature) {
 }
 
 // 5. Change the color function to use three colors for the major earthquakes based on the magnitude of the earthquake.
-// function getColor(magnitude) {
-//   if (magnitude > 6) {
-//     return "#ea2c2c";
-//   }
-//   if (magnitude < 6) {
-//     return "#ea822c";
-//   }
-//   if (magnitude < 5) {
-//     return "#ee9c00";
-//   }
-// //   if (magnitude > 6) {
-// //     return "#eecc00";
-// //   }
-// //   if (magnitude > 5) {
-// //     return "#d4ee00";
-// //   }
-// //   return "#98ee00";
-// // }
+function getColor(magnitude) {
+  if (magnitude > 5) {
+    return "#ea2c2c";
+  }
+  if (magnitude > 4) {
+    return "#ea822c";
+  }
+  return "#98ee00";
+}
 
 // 6. Use the function that determines the radius of the earthquake marker based on its magnitude.
 function getRadius(magnitude) {
