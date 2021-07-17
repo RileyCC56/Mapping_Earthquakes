@@ -16,7 +16,7 @@ let satelliteStreets = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/sate
 });
 
 //Create ADD and Additional map style
-let outdoors = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/outdoors-v11/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+let night = L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/navigation-night-v1/tiles/{z}/{x}/{y}?access_token={accessToken}', {
 	attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
 	maxZoom: 18,
 	accessToken: API_KEY
@@ -33,7 +33,7 @@ let map = L.map('mapid', {
 let baseMaps = {
   "Streets": streets,
   "Satellite": satelliteStreets,
-  "Outdoors": outdoors
+  "Night": night
 };
 
 // 1. Add a 3rd layer group for the major earthquake data.
@@ -104,7 +104,7 @@ d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geoj
   L.geoJson(data, {
     	// We turn each feature into a circleMarker on the map.
     	pointToLayer: function(feature, latlng) {
-      		// console.log(data);
+      		console.log(data);
       		return L.circleMarker(latlng);
         },
       // We set the style for each circleMarker using our styleInfo function.
@@ -136,19 +136,49 @@ function styleInfo(feature) {
 }
 
 // 5. Change the color function to use three colors for the major earthquakes based on the magnitude of the earthquake.
-
+// function getColor(magnitude) {
+//   if (magnitude > 6) {
+//     return "#ea2c2c";
+//   }
+//   if (magnitude < 6) {
+//     return "#ea822c";
+//   }
+//   if (magnitude < 5) {
+//     return "#ee9c00";
+//   }
+// //   if (magnitude > 6) {
+// //     return "#eecc00";
+// //   }
+// //   if (magnitude > 5) {
+// //     return "#d4ee00";
+// //   }
+// //   return "#98ee00";
+// // }
 
 // 6. Use the function that determines the radius of the earthquake marker based on its magnitude.
-
+function getRadius(magnitude) {
+  if (magnitude === 0) {
+    return 1;
+  }
+  return magnitude * 4;
+}
 
 // 7. Creating a GeoJSON layer with the retrieved data that adds a circle to the map 
 // sets the style of the circle, and displays the magnitude and location of the earthquake
 //  after the marker has been created and styled.
-L.geoJson(, {
-    
-});
-// 8. Add the major earthquakes layer to the map.
+L.geoJson(data, {
+  pointToLayer: function(feature, latlng) {
+    console.log(data);
+    return L.circleMarker(latlng);
+  },
+  style: styleInfo,
+  onEachFeature: function(feature, layer) {
+    layer.bindPopup("Magnitude: " + feature.properties.mag + "<br>Location: " + feature.properties.place);
+  }
 
+}).addTo(majorEarthquake);
+// 8. Add the major earthquakes layer to the map.
+majorEarthquake.addTo(map);
 // 9. Close the braces and parentheses for the major earthquake data.
 });
 
@@ -197,5 +227,5 @@ d3.json("https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/
   .addTo(tectonicplates);
 
   tectonicplates.addTo(map);
-});
+  });
 });
